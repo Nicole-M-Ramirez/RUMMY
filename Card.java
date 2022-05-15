@@ -12,7 +12,7 @@ import javax.swing.*;
  * the front of the card.  A card object is immutable; once instantiated, the
  * values cannot change.
  *
- * @author John K. Estell adapted by Patti Ordóñez
+ * 
  * @version 1.0
  */
 public class Card implements Comparable {

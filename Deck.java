@@ -16,20 +16,10 @@ public class Deck {
    public Deck() {
       deck = new LinkedList();
       Card card = new Card('0','0');
-      // 4 suits, 13 ranks
-      // final static char[] suit = {'c','d','h','s'};
-      // final static char [] rank = {'a','2','3','4','5','6','7','8','9','t','j','q','k'};
-
-      for(int i = 0; i < 4; i++){
-         for(int j = 0; j < 13; j++){
-            card= new Card(Card.suit[i], Card.rank[j]);
-            deck.add(card);
-         }
-      }
 
       Collections.shuffle(deck);
-
    }
+   
 	public Card peek()
 	{
 		if(deck.size() == 0)

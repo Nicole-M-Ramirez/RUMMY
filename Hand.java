@@ -7,6 +7,9 @@
 
 import java.util.*;
 
+import javax.swing.DefaultListModel;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
+
 
 /**
  * Represents the basic functionality of a hand of cards.
@@ -18,7 +21,8 @@ import java.util.*;
  */
 public class Hand implements HandInterface {
 
-   protected java.util.List hand = new ArrayList();
+   //protected java.util.List hand = new ArrayList();
+   DefaultListModel <Card> hand = new DefaultListModel<Card>();
 
    int holdSize = 0;
    int maxHoldSize = 9;
@@ -28,16 +32,37 @@ public class Hand implements HandInterface {
    * @param card card to be added to the current hand.
    */
    public void addCard( Card card ) {
-      hand.add( card );
+      hand.addElement( card );
+      this.sort(); //Organiza cada vez que se añade una nueva carta
    }
    
   /**
    * Searches for the first instance of a set (3 or 4 Cards of the same rank) in the hand.
    * @return  returns Card [] of Cards found in deck or <code>-null </code> if not found.
    */
-   public Card [] findSet( ){
-	    return null;
-   }
+   // public Card [] findSet( ){
+
+	//     final int handSize = hand.size();
+   //     if(handSize < 3){
+   //        return null;
+   //     }
+
+   //     char rankType;
+   //     Set set = new Set('0');
+   //     Card [] card = new Card[handSize];
+
+   //     for(int i = 0; i < handSize - 1; i++){
+
+   //       rankType = hand.get(i).getRank();
+
+   //       while(rankType == hand.get(i+1).getRank()){
+
+   //          set.addCard(hand.get(i));
+   //          card[i] = set.getCard(i);
+   //       }
+   //     }
+   //     return card;
+   // }
 
   /**
    * Obtains the card stored at the specified location in the hand.  Does not
@@ -61,8 +86,11 @@ public class Hand implements HandInterface {
       int index = hand.indexOf( card );
       if ( index < 0 )
          return null;
-      else
-         return (Card) hand.remove( index );
+      else{
+         hand.remove(index);
+         this.sort();
+         return card;
+      }
    }
 
 
@@ -73,7 +101,14 @@ public class Hand implements HandInterface {
    * the index is out of bounds.
    */
    public Card removeCard( int index ) {
-      return (Card) hand.remove( index );
+      if(index < 0 ){
+         return null;
+      }
+      else{
+         hand.remove(index);
+         this.sort();
+         return (Card) hand.get(index);
+      }
    }
 
 
@@ -99,7 +134,82 @@ public class Hand implements HandInterface {
    * Sort is performed according to the order specified in the {@link Card} class.
    */
    public void sort() {
-      Collections.sort( hand );
+
+     sortSuit();
+
+     final int size = hand.size();
+
+     DefaultListModel<Card> tmp = new DefaultListModel<Card>();
+     DefaultListModel<Card> set = new DefaultListModel<Card>();
+
+     for(int i = 0; i < size; i++){
+       
+         int n = i;
+
+        while(n < size && hand.get(n).getSuit() == hand.get(i).getSuit()){
+           set.addElement(hand.get(n));
+           n++;
+        }
+
+        i = n;
+        i--;
+
+        sortRank(set);
+
+        for(int j = 0; j <set.size(); j++){
+           tmp.addElement(set.get(j));
+        }
+
+        set.clear();
+     }
+
+     hand.clear();
+     for (int i = 0; i < size; i++){
+        hand.addElement( tmp.get(i) );
+     }
+
+   }
+
+   //
+   public void sortRank(DefaultListModel<Card> Ohand){
+
+      final int maxHandSize = Ohand.getSize();
+      
+      for(int i = 0; i < maxHandSize; i++){
+
+         int inx = i;
+
+         for(int j = i + 1; j < maxHandSize; j++){
+            if(Ohand.get(j).getRank() < Ohand.get(inx).getRank()){
+               inx = j;
+            }
+
+            Card tmp = Ohand.get(inx);
+            Ohand.setElementAt(Ohand.get(i), inx);
+            Ohand.setElementAt(tmp, i);
+         }
+      }
+
+
+   }
+
+   public void sortSuit(){
+
+      final int maxHandSize = hand.getSize();
+
+      for(int i = 0; i < maxHandSize; i++){
+         int inx = i;
+
+         for(int j = i+1; j <maxHandSize; j++){
+            if(hand.get(j).getSuit() < hand.get(inx).getSuit()){
+               inx = j;
+            }
+
+            Card tmp = hand.get(inx);
+            hand.setElementAt(hand.get(i), inx);
+            hand.setElementAt(tmp, i);
+         }
+      }
    }
 
 
@@ -118,7 +228,11 @@ public class Hand implements HandInterface {
    * @return <code>true</code> if the card is present in the hand.
    */
    public boolean containsCard( Card card ) {
-      return false;
+      if(hand.contains(card) == true){
+         return true;
+      } else {
+         return false;
+      }
    }
 
 
@@ -171,6 +285,7 @@ public class Hand implements HandInterface {
     * @return a list of cards held in the hand.
     */
     public String toString() {
+       this.sort();
         return hand.toString();
     }
 
@@ -187,6 +302,18 @@ public class Hand implements HandInterface {
            return false;
         hand.set( location, replacementCard );
         return true;
+    }
+
+    public DefaultListModel<Card> getHand(){
+
+      // DefaultListModel <Card> tmp = new DefaultListModel<Card>();
+
+      //  for(int i = 0; i < hand.size(); i++){
+      //     tmp.add(i, getCard(i));
+      //  }
+
+      //  return tmp;
+      return this.hand;
     }
 
 }

@@ -3,13 +3,13 @@ public interface StackInterface {
     public Stack Stack();
 
     //Push 'value' inside the stack
-    public boolean push(Object value);
+    public boolean addCard(Object value);
 
     //Pops the 'top' value out of the stack
-    public Object pop();
+    public Card removeCard();
 
     //Shows the 'top' value
-    public Object showTop();
+    public Card peek();
 
     //Tells if stack is empty
     public boolean isEmpty();
