@@ -36,33 +36,6 @@ public class Hand implements HandInterface {
       this.sort(); //Organiza cada vez que se añade una nueva carta
    }
    
-  /**
-   * Searches for the first instance of a set (3 or 4 Cards of the same rank) in the hand.
-   * @return  returns Card [] of Cards found in deck or <code>-null </code> if not found.
-   */
-   // public Card [] findSet( ){
-
-	//     final int handSize = hand.size();
-   //     if(handSize < 3){
-   //        return null;
-   //     }
-
-   //     char rankType;
-   //     Set set = new Set('0');
-   //     Card [] card = new Card[handSize];
-
-   //     for(int i = 0; i < handSize - 1; i++){
-
-   //       rankType = hand.get(i).getRank();
-
-   //       while(rankType == hand.get(i+1).getRank()){
-
-   //          set.addCard(hand.get(i));
-   //          card[i] = set.getCard(i);
-   //       }
-   //     }
-   //     return card;
-   // }
 
   /**
    * Obtains the card stored at the specified location in the hand.  Does not
@@ -144,14 +117,14 @@ public class Hand implements HandInterface {
 
      for(int i = 0; i < size; i++){
        
-         int n = i;
+         int k = i;
 
-        while(n < size && hand.get(n).getSuit() == hand.get(i).getSuit()){
-           set.addElement(hand.get(n));
-           n++;
+        while(k < size && hand.get(k).getSuit() == hand.get(k).getSuit()){
+           set.addElement(hand.get(k));
+           k++;
         }
 
-        i = n;
+        i = k;
         i--;
 
         sortRank(set);
@@ -170,7 +143,7 @@ public class Hand implements HandInterface {
 
    }
 
-   //
+   //Permite sortear la mano por el rango
    public void sortRank(DefaultListModel<Card> Ohand){
 
       final int maxHandSize = Ohand.getSize();
@@ -193,6 +166,7 @@ public class Hand implements HandInterface {
 
    }
 
+   //permite sortear la mano por el suit
    public void sortSuit(){
 
       final int maxHandSize = hand.getSize();
